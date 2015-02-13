@@ -152,6 +152,12 @@ if(!class_exists("CMB2")) {
 
 }
 
+/// about widget 
+if(!class_exists('Foo_Widget')){
+	require get_template_directory() . '/widget/widget.adv.php';
+}
+
+
 /// team member post type hook 
 
 // Register Custom Post Type
