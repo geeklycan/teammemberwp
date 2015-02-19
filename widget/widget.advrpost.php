@@ -23,26 +23,50 @@ class Adv_Recent_Post_Widget extends WP_Widget {
     public function widget( $args, $instance ) {
         extract( $args );
         $title = apply_filters( 'widget_title', $instance['title'] );
-        $adv_url = $instance['adv_url'];
-        $mediaid = $instance['mediaid'];
-        $attach = wp_prepare_attachment_for_js($mediaid);
+        $post_type_name     = $instance['post_type_name'];
+        $number_of_post     = $instance['number_of_post'];
+        $show_thumbs        = $instance['show_thumbs']; // 1 = show ; otherwise not
+        $display_style      = $instance['display_style']; // 0 = vertical ; 1 = horizontal;
+        $post_title_show    = $instance['post_title_show']; // 1 = yes; 0 = no;
 
-        $thumbs = $attach['sizes']['thumbnail']['url'];
         echo $before_widget;
 
-        if (empty( $title ) ){
-            $title =  "";
+        if (!empty( $title ) ){
+            echo "<h2>". $title. "</h2>";
+        }
+
+        $cls = "col-md-12";
+        if(1 == $display_style){
+            // horizontal style
+            $cls = "col-md-3";
         }
         ?>
 
-        <div class="adv-item">
-            <?php if($thumbs){ ?>
-                <a href="<?php if($adv_url){ echo $adv_url; } else{ echo "#"; } ?>" title="<?php echo $title; ?>">
-                    <img src='<?php echo $thumbs; ?>' alt="<?php echo $title; ?>" />
-                    <p><?php echo $title; ?></p>
+        <div class="row">
+            <?php
+                global $post;
+                $postdata = get_latest_cpt($post_type_name, $number_of_post);
+                foreach ( $postdata as $post ) : setup_postdata( $post );
+            ?>
+            <div class="<?php echo $cls; ?>">
+                <a href="<?php the_permalink(); ?>" <?php if ($post_title_show == 1){ echo 'title="'.get_the_title($post->ID).'"'; } ?>>
+                <?php if($show_thumbs){
+                    if ( has_post_thumbnail() ) {
+                        the_post_thumbnail('thumbnail');
+                    }
+                }?>
+                <?php if ($post_title_show == 1){ echo "<h3>".get_the_title($post->ID)."</h3>"; } ?>
                 </a>
-            <?php } ?>
+            </div>
+                    <?php
+                endforeach;
+            wp_reset_postdata();
+            wp_reset_query();
+            ?>
         </div>
+
+
+
 
         <?php
         echo $after_widget;
@@ -76,6 +100,7 @@ class Adv_Recent_Post_Widget extends WP_Widget {
      * @see WP_Widget::form()
      *
      * @param array $instance Previously saved values from database.
+     * @return string|void
      */
 
     public function form( $instance ) {
