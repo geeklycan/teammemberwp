@@ -61,8 +61,11 @@ class Adv_Recent_Post_Widget extends WP_Widget {
     public function update( $new_instance, $old_instance ) {
         $instance = array();
         $instance['title'] = strip_tags( $new_instance['title'] );
-        $instance['mediaid'] = strip_tags( $new_instance['mediaid'] );
-        $instance['adv_url'] = strip_tags( $new_instance['adv_url'] );
+        $instance['post_type_name'] = strip_tags( $new_instance['post_type_name'] );
+        $instance['number_of_post'] = strip_tags( $new_instance['number_of_post'] );
+        $instance['show_thumbs'] = strip_tags( $new_instance['show_thumbs'] );
+        $instance['display_style'] = strip_tags( $new_instance['display_style'] );
+        $instance['post_title_show'] = strip_tags($new_instance['post_title_show']);
 
         return $instance;
     }
@@ -171,7 +174,7 @@ class Adv_Recent_Post_Widget extends WP_Widget {
         </p>
 
         <p>
-            <input class="checkbox" type="checkbox" <?php checked($show_thumbs, 1); ?> id="<?php echo $this->get_field_id('show_thumbs'); ?>" name="<?php echo $this->get_field_name('show_thumbs'); ?>" />
+            <input class="checkbox" type="checkbox" value="1" <?php checked($show_thumbs, 1); ?> id="<?php echo $this->get_field_id('show_thumbs'); ?>" name="<?php echo $this->get_field_name('show_thumbs'); ?>" />
             <label for="<?php echo $this->get_field_id('show_thumbs'); ?>"><?php _e( 'Show Thumbnails: '); ?></label>
         </p>
 
@@ -184,7 +187,7 @@ class Adv_Recent_Post_Widget extends WP_Widget {
         <?php _e( 'Vertical'); ?>
            </label>
             <label>
-               <input type="radio" name="<?php echo $this->get_field_name('display_style'); ?>" id="<?php $this->get_field_name('display_style'); ?>" value="0" <?php checked($horizontal, true); ?>/>
+               <input type="radio" name="<?php echo $this->get_field_name('display_style'); ?>" id="<?php $this->get_field_name('display_style'); ?>" value="1" <?php checked($horizontal, true); ?>/>
         <?php _e( 'Horizontal'); ?>
            </label>
         </p>
@@ -206,6 +209,7 @@ class Adv_Recent_Post_Widget extends WP_Widget {
 
     <?php
     }
+
 
     private function get_all_post_type(){
         $args = array('public' => true);
