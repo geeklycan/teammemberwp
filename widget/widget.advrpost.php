@@ -1,12 +1,12 @@
 <?php
 /**
- * Adds Advertisement widget.
+ * Addvanced Recent Post  widget.
  */
 class Adv_Recent_Post_Widget extends WP_Widget {
 
     public function __construct() {
         parent::__construct(
-            'adv_widget', // Base ID
+            'advrp_widget', // Base ID
             'Advanced Recent Post Widget', // Name
             array( 'description' => __( 'An Advanced Recent Post Widget', 'tmthree' ), ) // Args
         );
@@ -240,7 +240,7 @@ class Adv_Recent_Post_Widget extends WP_Widget {
         $args = array('public' => true);
         return get_post_types($args, 'names');
     }
-} // class Adv_Widget
+} // class Adv_Recent_Post_Widget
 
 
 /// init 
